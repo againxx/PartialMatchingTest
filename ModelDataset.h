@@ -18,49 +18,48 @@
 
 class ModelDataset
 {
-	public:
-		ModelDataset() = default;
-		ModelDataset(const std::string & datasetDir);
-		~ModelDataset() = default;
+  public:
+	ModelDataset() = default;
+	ModelDataset(const std::string &datasetDir);
+	~ModelDataset() = default;
 
-		void load(const std::string & datasetDir);
+	void load(const std::string &datasetDir);
 
-		void clearAllData();
+	void clearAllData();
 
-		void splitInTwo(ModelDataset & subDataset1, ModelDataset & subDataset2);
+	void splitInTwo(ModelDataset &subDataset1, ModelDataset &subDataset2);
 
-		// SET functions
-		void setKeypointFilePostfix(const std::string & keyptFilePostfix) { keypointFilePostfix = keyptFilePostfix; }
-		void setData(const std::vector<KeypointRepresentation> & keyptRepr,
-					 const std::vector<std::string> & categories,
-					 const std::vector<std::string> & names);
+	// SET functions
+	void setKeypointFilePostfix(const std::string &keyptFilePostfix) { keypointFilePostfix = keyptFilePostfix; }
+	void setData(const std::vector<KeypointRepresentation> &keyptRepr,
+				 const std::vector<std::string> &categories,
+				 const std::vector<std::string> &names);
 
-		// GET functions
-		const std::string & getModelName(int index) const { return modelNames[index]; }
-		const std::string & getModelCategory(int index) const { return modelCategories[index]; }
-		const std::string & getKeypointFilePostfix() const { return keypointFilePostfix; }
-		int 				getModelNum() const { return modelNum; }
-		size_t 				getModelCategoryNum() const { return modelCategories.size(); }
-		//int 				getKeypointNum() const { return keypointNum; }
-		const std::vector<KeypointRepresentation> & getKeypointRepresentation() const { return keypointRepresentation; }
-		std::vector<KeypointRepresentation> & getKeypointRepresentation()
-		{
-			return const_cast<std::vector<KeypointRepresentation> &>(static_cast<const ModelDataset &>(*this).getKeypointRepresentation());
-		}
-		std::vector<KeypointRepresentation> getCompleteModelsKeypointRepresentation() const;
+	// GET functions
+	const std::string &getModelName(int index) const { return modelNames[index]; }
+	const std::string &getModelCategory(int index) const { return modelCategories[index]; }
+	const std::string &getKeypointFilePostfix() const { return keypointFilePostfix; }
+	int getModelNum() const { return modelNum; }
+	size_t getModelCategoryNum() const { return modelCategories.size(); }
+	//int 				getKeypointNum() const { return keypointNum; }
+	const std::vector<KeypointRepresentation> &getKeypointRepresentation() const { return keypointRepresentation; }
+	std::vector<KeypointRepresentation> &getKeypointRepresentation()
+	{
+		return const_cast<std::vector<KeypointRepresentation> &>(static_cast<const ModelDataset &>(*this).getKeypointRepresentation());
+	}
+	std::vector<KeypointRepresentation> getCompleteModelsKeypointRepresentation() const;
 
-	private:
-		//void copyLocalTDF(const std::string & sourcePath, const std::string & destPath);
+  private:
+	//void copyLocalTDF(const std::string & sourcePath, const std::string & destPath);
 
-		// Data
-		std::vector<KeypointRepresentation> keypointRepresentation;
-		std::vector<std::string> modelCategories;
-		std::vector<std::string> modelNames;
+	// Data
+	std::vector<KeypointRepresentation> keypointRepresentation;
+	std::vector<std::string> modelCategories;
+	std::vector<std::string> modelNames;
 
-		std::string keypointFilePostfix = "keypts.txt";
+	std::string keypointFilePostfix = "keypts.txt";
 
-		size_t modelNum = 0;
+	size_t modelNum = 0;
 };
-
 
 #endif /* ifndef MODEL_DATASET_ */

@@ -1,14 +1,18 @@
 #include "ImprovedRANSAC.h"
 
-ImprovedRANSAC::ImprovedRANSAC(int num, const Eigen::Vector3f * matchedKeyptPos1, const Eigen::Vector3f * matchedKeyptPos2,
-							   int totalKeyptNum1, int totalKeyptNum2, const Eigen::Vector3f * totalKeyptPos1, const Eigen::Vector3f * totalKeyptPos2)
- : RANSAC(num, matchedKeyptPos1, matchedKeyptPos2),
-   totalKeypointNum1(totalKeyptNum1),
-   totalKeypointNum2(totalKeyptNum2),
-   totalKeypointPositions1(totalKeyptPos1),
-   totalKeypointPositions2(totalKeyptPos2)
+ImprovedRANSAC::ImprovedRANSAC(int num,
+							   const Eigen::Vector3f *matchedKeyptPos1,
+							   const Eigen::Vector3f *matchedKeyptPos2,
+							   int totalKeyptNum1,
+							   int totalKeyptNum2,
+							   const Eigen::Vector3f *totalKeyptPos1,
+							   const Eigen::Vector3f *totalKeyptPos2)
+	: RANSAC(num, matchedKeyptPos1, matchedKeyptPos2),
+	  totalKeypointNum1(totalKeyptNum1),
+	  totalKeypointNum2(totalKeyptNum2),
+	  totalKeypointPositions1(totalKeyptPos1),
+	  totalKeypointPositions2(totalKeyptPos2)
 {
-
 }
 
 Eigen::Matrix4f ImprovedRANSAC::getTransfomationMatrix() const
@@ -30,7 +34,7 @@ Eigen::Matrix4f ImprovedRANSAC::getTransfomationMatrix() const
 	keypointCloud2->points.resize(keypointCloud2->width * keypointCloud2->height);
 
 	pcl::registration::TransformationEstimationSVD<pcl::PointXYZ, pcl::PointXYZ>::Matrix4 transformation1;
-	int loopNum = 30 * pairNum;
+	int loopNum = loopRatio * pairNum;
 	double minMatchingError = std::numeric_limits<double>::max();
 	double matchingError;
 	std::random_device rd;
@@ -51,8 +55,7 @@ Eigen::Matrix4f ImprovedRANSAC::getTransfomationMatrix() const
 					if (temp == randomIndex[k])
 						break;
 				}
-			}
-			while (j != k);
+			} while (j != k);
 			randomIndex[j] = temp;
 		}
 
@@ -100,7 +103,7 @@ Eigen::Matrix4f ImprovedRANSAC::getTransfomationMatrix() const
 	return transformationMatrix;
 }
 
-double ImprovedRANSAC::computeMatchingError(const Eigen::Matrix4f & transformationMatrix) const
+double ImprovedRANSAC::computeMatchingError(const Eigen::Matrix4f &transformationMatrix) const
 {
 	double matchingError = 0;
 	Eigen::Matrix3f rotateMat = transformationMatrix.topLeftCorner(3, 3);
@@ -125,7 +128,6 @@ double ImprovedRANSAC::computeMatchingError(const Eigen::Matrix4f & transformati
 		keypointCloud1->points[i].x = transformedPoint[0];
 		keypointCloud1->points[i].y = transformedPoint[1];
 		keypointCloud1->points[i].z = transformedPoint[2];
-
 	}
 	for (int i = 0; i < totalKeypointNum2; ++i)
 	{

@@ -5,20 +5,26 @@
 
 class ImprovedRANSAC : public RANSAC
 {
-	public:
-		ImprovedRANSAC(int num, const Eigen::Vector3f * matchedKeyptPos1, const Eigen::Vector3f * matchedKeyptPos2,
-					   int totalKeyptNum1, int totalKeyptNum2, const Eigen::Vector3f * totalKeyptPos1, const Eigen::Vector3f * totalKeyptPos2);
-		~ImprovedRANSAC() = default;
+  public:
+	ImprovedRANSAC(int num,
+				   const Eigen::Vector3f *matchedKeyptPos1,
+				   const Eigen::Vector3f *matchedKeyptPos2,
+				   int totalKeyptNum1,
+				   int totalKeyptNum2,
+				   const Eigen::Vector3f *totalKeyptPos1,
+				   const Eigen::Vector3f *totalKeyptPos2);
 
-		Eigen::Matrix4f getTransfomationMatrix() const;
+	~ImprovedRANSAC() = default;
 
-	private:
-		double computeMatchingError(const Eigen::Matrix4f & transformationMatrix) const;
+	Eigen::Matrix4f getTransfomationMatrix() const;
 
-		int totalKeypointNum1;
-		int totalKeypointNum2;
-		const Eigen::Vector3f * totalKeypointPositions1;
-		const Eigen::Vector3f * totalKeypointPositions2;
+  private:
+	double computeMatchingError(const Eigen::Matrix4f &transformationMatrix) const;
+
+	int totalKeypointNum1;
+	int totalKeypointNum2;
+	const Eigen::Vector3f *totalKeypointPositions1;
+	const Eigen::Vector3f *totalKeypointPositions2;
 };
 
 #endif /* ifndef IMPROVED_RANSAC_H_ */

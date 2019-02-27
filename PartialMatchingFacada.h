@@ -10,34 +10,35 @@
 
 class PartialMatchingFacada
 {
-	public:
-		PartialMatchingFacada(const std::string & datasetDir);
-		PartialMatchingFacada(const std::string & datasetDir, const std::string & visualWordFilePath);
-		~PartialMatchingFacada();
+  public:
+	PartialMatchingFacada(const std::string &datasetDir);
+	PartialMatchingFacada(const std::string &datasetDir, const std::string &visualWordFilePath);
+	~PartialMatchingFacada();
 
-        // GET functions
-		MatchingResultParser getMatchingResult(const SegmentedPatch & patch, bool onlyConsiderCompleteModel = false);
-		MatchingResultParser getMatchingResult(const SegmentedPatch & patch, const SegmentedPatch & adjacentPatch, bool onlyConsiderCompleteModel = false);
-        int getPartialMatchingAlgorithm() const { return partialMatchingAlgorithm; }
+	// GET functions
+	MatchingResultParser getMatchingResult(const SegmentedPatch &patch, bool onlyConsiderCompleteModel = false);
+	MatchingResultParser getMatchingResult(const SegmentedPatch &patch, const SegmentedPatch &adjacentPatch, bool onlyConsiderCompleteModel = false);
+	int getPartialMatchingAlgorithm() const { return partialMatchingAlgorithm; }
 
-        // SET functions
-        void setPartialMatchingAlgorithm(int algorithm);
+	// SET functions
+	void setPartialMatchingAlgorithm(int algorithm);
+	void setCandidateCount(int count);
 
-		static const int BOW_ALGORITHM, PRIORITY_ALGORITHM;
+	static const int BOW_ALGORITHM, PRIORITY_ALGORITHM;
 
-	private:
-		MatchingResultParser computeMatchingResult(bool onlyConsiderCompleteModel);
+  private:
+	MatchingResultParser computeMatchingResult(bool onlyConsiderCompleteModel);
 
-		int paraVisualWordNum = 100;
-		int paraKeypointNum = 500;
+	int paraVisualWordNum = 100;
+	int paraKeypointNum = 500;
 
-		ModelDataset modelDataset;
-		VisualWord visualWord;
+	ModelDataset modelDataset;
+	VisualWord visualWord;
 
-        int partialMatchingAlgorithm = BOW_ALGORITHM;
+	int partialMatchingAlgorithm = BOW_ALGORITHM;
 
-		DescriptorGenerator descriptorGenerator;
-		PartialMatching * partialMatching = nullptr;
+	DescriptorGenerator descriptorGenerator;
+	PartialMatching *partialMatching = nullptr;
 };
 
 #endif /* PARTIAL_MATCHING_FACADA_H_ */

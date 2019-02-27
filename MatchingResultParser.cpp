@@ -1,13 +1,13 @@
 #include "MatchingResultParser.h"
 
-MatchingResultParser::MatchingResultParser(const std::vector<Match> & matches, const std::vector<KeypointRepresentation> & models, const KeypointRepresentation & patch)
+MatchingResultParser::MatchingResultParser(const std::vector<Match> &matches, const std::vector<KeypointRepresentation> &models, const KeypointRepresentation &patch)
 {
-	for (const auto & match : matches)
+	for (const auto &match : matches)
 	{
 		modelNames.push_back(models[match.modelIndex].getName());
 
-		Eigen::Vector3f * patchMatchedKeyptPos = new Eigen::Vector3f[match.pairNum];
-		Eigen::Vector3f * modelMatchedKeyptPos = new Eigen::Vector3f[match.pairNum];
+		Eigen::Vector3f *patchMatchedKeyptPos = new Eigen::Vector3f[match.pairNum];
+		Eigen::Vector3f *modelMatchedKeyptPos = new Eigen::Vector3f[match.pairNum];
 
 		for (int i = 0; i < match.pairNum; ++i)
 		{
@@ -15,9 +15,14 @@ MatchingResultParser::MatchingResultParser(const std::vector<Match> & matches, c
 			modelMatchedKeyptPos[i] = models[match.modelIndex].getPositions()[match.modelKeypointIndexes[i]];
 		}
 
+		RANSAC *ransac = new ImprovedRANSAC(match.pairNum,
+											modelMatchedKeyptPos,
+											patchMatchedKeyptPos,
+											models[match.modelIndex].getNum(),
+											patch.getNum(),
+											models[match.modelIndex].getPositions(),
+											patch.getPositions());
 
-		RANSAC * ransac = new ImprovedRANSAC(match.pairNum, modelMatchedKeyptPos, patchMatchedKeyptPos,
-											 models[match.modelIndex].getNum(), patch.getNum(), models[match.modelIndex].getPositions(), patch.getPositions());
 		transformationMatrixs.push_back(ransac->getTransfomationMatrix());
 
 		errors.push_back(computeMatchingError(models[match.modelIndex].getNum(),
@@ -27,13 +32,13 @@ MatchingResultParser::MatchingResultParser(const std::vector<Match> & matches, c
 
 		++matchNum;
 
-		delete [] patchMatchedKeyptPos;
-		delete [] modelMatchedKeyptPos;
+		delete[] patchMatchedKeyptPos;
+		delete[] modelMatchedKeyptPos;
 		delete ransac;
 	}
 }
 
-double MatchingResultParser::computeMatchingError(int keypointNum1, int keypointNum2, const Eigen::Vector3f * keypointPositions1, const Eigen::Vector3f * keypointPositions2)
+double MatchingResultParser::computeMatchingError(int keypointNum1, int keypointNum2, const Eigen::Vector3f *keypointPositions1, const Eigen::Vector3f *keypointPositions2)
 {
 	double matchingError = 0;
 	Eigen::Matrix3f rotateMat = transformationMatrixs.back().topLeftCorner(3, 3);
@@ -58,7 +63,6 @@ double MatchingResultParser::computeMatchingError(int keypointNum1, int keypoint
 		keypointCloud1->points[i].x = transformedPoint[0];
 		keypointCloud1->points[i].y = transformedPoint[1];
 		keypointCloud1->points[i].z = transformedPoint[2];
-
 	}
 	for (int i = 0; i < keypointNum2; ++i)
 	{

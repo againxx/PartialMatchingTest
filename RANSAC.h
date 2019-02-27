@@ -10,16 +10,17 @@
 
 class RANSAC
 {
-	public:
-		RANSAC(int num, const Eigen::Vector3f * matchedKeyptPos1, const Eigen::Vector3f * matchedKeyptPos2);
-		virtual ~RANSAC() = default;
+  public:
+	RANSAC(int num, const Eigen::Vector3f *matchedKeyptPos1, const Eigen::Vector3f *matchedKeyptPos2);
+	virtual ~RANSAC() = default;
 
-		virtual Eigen::Matrix4f getTransfomationMatrix() const;
+	virtual Eigen::Matrix4f getTransfomationMatrix() const;
 
-	protected:
-		int pairNum;
-		const Eigen::Vector3f * matchedKeypointPositions1;
-		const Eigen::Vector3f * matchedKeypointPositions2;
+  protected:
+	int pairNum;
+	const Eigen::Vector3f *matchedKeypointPositions1;
+	const Eigen::Vector3f *matchedKeypointPositions2;
+	const int loopRatio = 100;
 };
 
 #endif /* ifndef RANSAC_H_ */

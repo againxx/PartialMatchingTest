@@ -5,14 +5,13 @@
 
 class SingleModeDatasetGenerator : public DatasetGenerator
 {
-	public:
-		SingleModeDatasetGenerator(int keyptNum = 500, const std::string & keyptFilePostfix = "keypts.txt")
-			: DatasetGenerator(keyptNum, keyptFilePostfix) { }
+  public:
+	SingleModeDatasetGenerator(int keyptNum = 500, const std::string &keyptFilePostfix = "keypts.txt")
+		: DatasetGenerator(keyptNum, keyptFilePostfix) {}
 
-		~SingleModeDatasetGenerator() = default;
+	~SingleModeDatasetGenerator() = default;
 
-		void generate(const std::string & pointCloudDir, const std::string & datasetDir);
-
+	void generate(const std::string &pointCloudDir, const std::string &datasetDir);
 };
 
 #endif /* SINGLE_MODE_DATASET_GENERATOR_H_ */

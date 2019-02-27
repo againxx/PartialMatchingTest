@@ -18,25 +18,29 @@ struct Match
 
 class MatchComparison
 {
-	public:
-		bool operator() (const Match & lMatch, const Match & rMatch)
-		{
-			return lMatch.costValue > rMatch.costValue;
-		}
+  public:
+	bool operator()(const Match &lMatch, const Match &rMatch)
+	{
+		return lMatch.costValue > rMatch.costValue;
+	}
 };
 
 class PartialMatching
 {
-	public:
-		PartialMatching() = default;
-		PartialMatching(const std::vector<KeypointRepresentation> & models) : modelData(models) {}
-		virtual ~PartialMatching() = default;
+  public:
+	PartialMatching() = default;
+	PartialMatching(const std::vector<KeypointRepresentation> &models) : modelData(models) {}
+	virtual ~PartialMatching() = default;
 
-		virtual std::vector<Match> searchPartialMatchedModel(const KeypointRepresentation & patch) = 0;
-		
-	protected:
-		std::vector<KeypointRepresentation> modelData;
-		KeypointRepresentation patchData;
+	virtual std::vector<Match> searchPartialMatchedModel(const KeypointRepresentation &patch) = 0;
+
+	// SET functions
+	void setCandidateCount(int count) { paraCandidateCount = count; }
+
+  protected:
+	std::vector<KeypointRepresentation> modelData;
+	KeypointRepresentation patchData;
+	int paraCandidateCount = 5;
 };
 
-#endif 	/* PARTIAL_MATCHING_H_ */
+#endif /* PARTIAL_MATCHING_H_ */

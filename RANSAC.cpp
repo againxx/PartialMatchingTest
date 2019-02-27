@@ -27,7 +27,7 @@ Eigen::Matrix4f RANSAC::getTransfomationMatrix() const
 	keypointCloud2->points.resize(keypointCloud2->width * keypointCloud2->height);
 
 	pcl::registration::TransformationEstimationSVD<pcl::PointXYZ, pcl::PointXYZ>::Matrix4 transformation1;
-	int loopNum = 15 * pairNum;
+	int loopNum = loopRatio * pairNum;
 	int inlinerNum, maxInliner = -1;
 	std::random_device rd;
 	std::uniform_int_distribution<int> distribution(0, pairNum - 1);
